@@ -5,9 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Unpack project zip
+      - name: Unpack project zips
         run: |
           if [ -f Xenomized-project.zip ]; then unzip -o Xenomized-project.zip; fi
+          for z in $(ls Xenomized-fix*.zip 2>/dev/null | sort -V); do unzip -o "$z"; done
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
