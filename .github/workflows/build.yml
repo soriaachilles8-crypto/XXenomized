@@ -5,10 +5,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Unpack project zips
+      - name: Unpack newest project zip only
         run: |
-          if [ -f Xenomized-project.zip ]; then unzip -o Xenomized-project.zip; fi
-          for z in $(ls Xenomized-fix*.zip 2>/dev/null | sort -V); do unzip -o "$z"; done
+          rm -rf src
+          latest=$(ls Xenomized-fix*.zip 2>/dev/null | sort -V | tail -1)
+          if [ -n "$latest" ]; then
+            echo "Using $latest"
+            unzip -o "$latest"
+          else
+            unzip -o Xenomized-project.zip
+          fi
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
